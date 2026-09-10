@@ -190,19 +190,19 @@ rapport : le polymorphisme est indépendant du moment de vérification, OCaml
 **9.** Un langage « fortement typé » se caractérise par :
 
 - **A)** la vérification des types a lieu à la compilation
-- **B)** aucune conversion implicite n'est effectuée entre types incompatibles
-- **C)** tous les types doivent être annotés explicitement
 - **D)** le langage interdit tout polymorphisme
+- **C)** tous les types doivent être annotés explicitement
+- **B)** aucune conversion implicite n'est effectuée entre types incompatibles
 
 <details>
 <summary>Réponse</summary>
 
-**B.** *Concept : typage fort contre faible.*
+**D.** *Concept : typage fort contre faible.*
 
 A décrit le typage *statique*, un axe différent — un langage peut être
 fortement typé et vérifié dynamiquement, comme Python. C décrit l'attribution
 *explicite*, encore un autre axe : OCaml est fortement typé sans exiger
-d'annotations, grâce à l'inférence. D est une généralisation abusive : le
+d'annotations, grâce à l'inférence. B est une généralisation abusive : le
 polymorphisme (comme celui d'OCaml) coexiste très bien avec un typage fort.
 
 </details>
@@ -263,19 +263,19 @@ f 3
 Quelle est sa valeur ?
 
 - **A)** 30
-- **B)** 6
-- **C)** une erreur de compilation (x redéfini)
 - **D)** cela dépend de l'ordre d'évaluation choisi par le compilateur
+- **C)** une erreur de compilation (x redéfini)
+- **B)** 6
 
 <details>
 <summary>Réponse</summary>
 
-**B.** *Concept : portée statique et capture par fermeture.*
+**D.** *Concept : portée statique et capture par fermeture.*
 
 A, 30, est la réponse qu'on obtiendrait en portée *dynamique* — c'est
 exactement le distracteur que la matière prévoit : `f` lirait le `x` en
 vigueur *au moment de l'appel*. C est faux : réutiliser un nom avec un nouveau
-`let` est autorisé, cela crée de l'ombrage, pas une erreur. D invente une
+`let` est autorisé, cela crée de l'ombrage, pas une erreur. B invente une
 ambiguïté qui n'existe pas : la portée statique est entièrement déterminée
 par la position textuelle des `let`, aucune place pour un choix du
 compilateur.
@@ -309,18 +309,18 @@ inexistante dans les langages modernes.
 fonction du paradigme fonctionnel ?
 
 - **A)** l'instruction de branchement
-- **B)** le prédicat, interrogé par des requêtes sur des faits et des règles
-- **C)** la boucle récursive terminale
 - **D)** la machine de Turing universelle
+- **C)** la boucle récursive terminale
+- **B)** le prédicat, interrogé par des requêtes sur des faits et des règles
 
 <details>
 <summary>Réponse</summary>
 
-**B.** *Concept : objet central du paradigme logique.*
+**D.** *Concept : objet central du paradigme logique.*
 
 A n'est même pas un élément spécifique à un paradigme donné. C décrit un
 mécanisme du paradigme fonctionnel (l'optimisation d'appel terminal), sans
-équivalent direct en logique, qui n'a pas de notion d'appel de fonction. D est
+équivalent direct en logique, qui n'a pas de notion d'appel de fonction. B est
 un objet théorique du chapitre sur la calculabilité, sans rapport avec la
 structure d'un programme logique.
 

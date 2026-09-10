@@ -526,18 +526,18 @@ que `mem` ne renvoie qu'un `bool` : on sait déjà ce qu'on cherche.
 **23.** Quel est le type de `List.nth` ?
 
 - **A)** `int -> 'a list -> 'a`
-- **B)** `'a list -> int -> 'a`
-- **C)** `'a list -> int -> 'a option`
 - **D)** `'a list -> int -> 'a list`
+- **C)** `'a list -> int -> 'a option`
+- **B)** `'a list -> int -> 'a`
 
 <details>
 <summary>Réponse</summary>
 
-**B.** *Concept : ordre des arguments d'un accès indexé, malgré son coût linéaire.*
+**D.** *Concept : ordre des arguments d'un accès indexé, malgré son coût linéaire.*
 
 `List.nth l i` prend la liste d'abord, l'indice ensuite ; c'est aussi une
 fonction **partielle** (elle lève une exception si l'indice dépasse), donc
-sans `option` — ce qui élimine C. A inverse l'ordre des paramètres. D
+sans `option` — ce qui élimine C. A inverse l'ordre des paramètres. B
 confondrait un accès à un seul élément avec une extraction de sous-liste,
 un rôle que ne joue pas `List.nth`.
 
@@ -597,20 +597,20 @@ syntaxique pour la fonction elle-même : ce sont deux choses différentes.
 **26.** Quel est le type de `let annotated : int -> int = fun x -> x + 1` ?
 
 - **A)** `'a -> 'a`
-- **B)** `int -> int`
-- **C)** `int -> int -> int`
 - **D)** `'a -> int`
+- **C)** `int -> int -> int`
+- **B)** `int -> int`
 
 <details>
 <summary>Réponse</summary>
 
-**B.** *Concept : une annotation de type restreint l'inférence sans rien changer au comportement.*
+**D.** *Concept : une annotation de type restreint l'inférence sans rien changer au comportement.*
 
 L'annotation `int -> int` coïncide avec ce que l'inférence aurait trouvé seule
 via `+`, donc elle ne fait que confirmer — la fonction se comporte
 normalement. A ignorerait l'annotation et redériverait un type générique, ce
 qu'aucune annotation cohérente ne permet. C ajoute une flèche fantôme, comme
-si la fonction prenait deux arguments. D laisse le paramètre polymorphe malgré
+si la fonction prenait deux arguments. B laisse le paramètre polymorphe malgré
 l'annotation explicite, une contradiction directe avec l'énoncé du type.
 
 </details>

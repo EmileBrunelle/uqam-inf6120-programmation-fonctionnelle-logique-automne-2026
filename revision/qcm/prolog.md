@@ -91,18 +91,18 @@ alors que la requête la contraint.
 **4.** Quel est le résultat de `?- a(X, Y) = b(X, Y).` ?
 
 - **A)** `X = a, Y = b.`
-- **B)** `false.`
-- **C)** `X = Y.`
 - **D)** Une erreur de type.
+- **C)** `X = Y.`
+- **B)** `false.`
 
 <details>
 <summary>Réponse</summary>
 
-**B.** *Concept : les foncteurs différents échouent d'emblée.*
+**D.** *Concept : les foncteurs différents échouent d'emblée.*
 
 A confond foncteur et argument : `a` et `b` sont les noms des prédicats, pas
 des valeurs à unifier avec `X` et `Y`. C ignorerait que l'unification échoue
-avant même d'atteindre les arguments. D transpose un réflexe de langage
+avant même d'atteindre les arguments. B transpose un réflexe de langage
 typé statiquement : Prolog n'a pas de système de types qui rejetterait ceci à
 la compilation — l'unification échoue simplement, sans erreur.
 
@@ -114,20 +114,20 @@ la compilation — l'unification échoue simplement, sans erreur.
 `σ2` (qui unifie les deux mêmes termes) lorsque :
 
 - **A)** `σ1` a moins de variables liées que `σ2`.
-- **B)** Il existe `σ3` telle que `σ2 = σ3 ◦ σ1`.
-- **C)** `σ1` est trouvée en premier par l'algorithme d'unification.
 - **D)** `σ1` lie chaque variable à un atome plutôt qu'à un terme composé.
+- **C)** `σ1` est trouvée en premier par l'algorithme d'unification.
+- **B)** Il existe `σ3` telle que `σ2 = σ3 ◦ σ1`.
 
 <details>
 <summary>Réponse</summary>
 
-**B.** *Concept : substitution la plus générale (mgu).*
+**D.** *Concept : substitution la plus générale (mgu).*
 
 A décrit une intuition proche mais incorrecte formellement : ce n'est pas le
 nombre de liaisons qui compte, mais la possibilité de **dériver** `σ2` en
 composant `σ1` avec une substitution supplémentaire. C confond l'ordre de
 calcul avec la relation de généralité — l'algorithme du recueil calcule
-justement toujours la plus générale, mais ce n'est pas ce qui la définit. D
+justement toujours la plus générale, mais ce n'est pas ce qui la définit. B
 est un cas particulier qui peut être vrai ou faux selon l'exemple : rien
 n'exige que la substitution la plus générale évite les termes composés.
 
@@ -168,21 +168,21 @@ solution). Que peut-on en conclure sur `parent(randy, _)` et
 
 - **A)** Rien : l'échec pourrait venir de l'ordre des clauses, indépendamment
   du contenu du programme.
-- **B)** Aucun fait `parent(randy, _)` ni `parent(jimbo, _)` n'est démontrable
+- **D)** La clause `grand_parent/2` est mal formée.
   à partir du programme.
 - **C)** `randy` et `jimbo` ne sont pas des atomes valides.
-- **D)** La clause `grand_parent/2` est mal formée.
+- **B)** Aucun fait `parent(randy, _)` ni `parent(jimbo, _)` n'est démontrable
 
 <details>
 <summary>Réponse</summary>
 
-**B.** *Concept : l'échec de résolution reflète l'absence de démonstration, pas un défaut de syntaxe.*
+**D.** *Concept : l'échec de résolution reflète l'absence de démonstration, pas un défaut de syntaxe.*
 
 A est un réflexe de méfiance excessive : l'ordre des clauses change l'ordre et
 parfois la terminaison des solutions, mais pas le fait qu'une solution
 existe ou non — si `grand_parent(marvin, W)` a une preuve logique, la
 résolution SLD la trouvera dans un ordre ou un autre, sauf boucle infinie
-avant de l'atteindre. C et D imaginent une erreur de forme là où il n'y en a
+avant de l'atteindre. C et B imaginent une erreur de forme là où il n'y en a
 aucune : le programme est syntaxiquement correct, il manque simplement les
 faits qui rendraient le but démontrable — exactement l'hypothèse du monde
 clos en action.
@@ -383,20 +383,20 @@ sous une forme qui n'est pas la notation attendue dans les exemples du cours
 dans le recueil) ?
 
 - **A)** Seulement `X = b` et `X = a`.
-- **B)** `X = b ; X = a ; X = Y ; false.`
-- **C)** `false.`, car `Y` n'est pas instanciée.
 - **D)** Une énumération infinie, car `Y` peut prendre toute valeur.
+- **C)** `false.`, car `Y` n'est pas instanciée.
+- **B)** `X = b ; X = a ; X = Y ; false.`
 
 <details>
 <summary>Réponse</summary>
 
-**B.** *Concept : un prédicat peut engendrer des solutions même sur des arguments partiellement non instanciés.*
+**D.** *Concept : un prédicat peut engendrer des solutions même sur des arguments partiellement non instanciés.*
 
 A oublie la troisième position de la liste : `membre/2` explore chaque
 position, y compris celle occupée par la variable libre `Y`, ce qui produit
 la solution `X = Y` (les deux variables unifiées entre elles, sans valeur
 concrète). C applique à tort une exigence d'instanciation complète, qui ne
-s'applique pas à l'unification ordinaire ni à `membre/2`. D confond « une
+s'applique pas à l'unification ordinaire ni à `membre/2`. B confond « une
 variable non instanciée dans la liste » avec un domaine infini à énumérer :
 ici la liste a une longueur fixe (trois éléments), donc trois solutions puis
 `false.`.
@@ -435,21 +435,21 @@ quel sens, ici pour engendrer les cinq façons de couper une liste de quatre
 d'OCaml sur une liste ?
 
 - **A)** `[x, reste]`
-- **B)** `[x | reste]`
-- **C)** `[x] ++ reste`
 - **D)** `head(x, reste)`
+- **C)** `[x] ++ reste`
+- **B)** `[x | reste]`
 
 <details>
 <summary>Réponse</summary>
 
-**B.** *Concept : `[T|Q]` décompose une liste en tête et queue, comme `::` en OCaml.*
+**D.** *Concept : `[T|Q]` décompose une liste en tête et queue, comme `::` en OCaml.*
 
 A dénote une liste à deux éléments précis, pas une décomposition tête/queue —
 piège classique de confondre la virgule (élément suivant) et la barre
 verticale (reste de la liste). C emprunte la notation de concaténation
 d'un autre langage (par exemple F# ou Haskell pour l'opérateur infixe), qui
 n'existe pas sous cette forme en Prolog — c'est `concatenation/3`
-(`append/3`) qui joue ce rôle, comme prédicat, non comme opérateur. D invente
+(`append/3`) qui joue ce rôle, comme prédicat, non comme opérateur. B invente
 une syntaxe fonctionnelle qui n'a pas d'équivalent Prolog standard.
 
 </details>
@@ -488,19 +488,19 @@ claire(vert). claire(jaune).` et
 `foncee(C) :- couleur(C), \+ claire(C).`, que renvoie `?- foncee(C).` ?
 
 - **A)** `C = vert ; C = jaune.`
-- **B)** `C = rouge ; C = bleu ; false.`
-- **C)** `false.`, car `\+` inverse toujours le résultat en échec.
 - **D)** Une erreur, car `claire/1` n'est pas définie pour `rouge` et `bleu`.
+- **C)** `false.`, car `\+` inverse toujours le résultat en échec.
+- **B)** `C = rouge ; C = bleu ; false.`
 
 <details>
 <summary>Réponse</summary>
 
-**B.** *Concept : négation par l'échec.*
+**D.** *Concept : négation par l'échec.*
 
 A inverse le sens de `foncee` : ce sont justement les couleurs *sans* clause
 `claire/1` qui satisfont `\+ claire(C)`. C généralise à tort : `\+ But`
 réussit précisément quand `But` échoue, ce n'est pas un échec systématique.
-D applique un réflexe de langage typé où l'absence de cas prévu serait une
+B applique un réflexe de langage typé où l'absence de cas prévu serait une
 erreur — en Prolog, l'absence de clause `claire(rouge).` signifie simplement
 que `claire(rouge)` est indémontrable, donc que `\+ claire(rouge)` réussit.
 
@@ -535,19 +535,19 @@ Dans la seconde, `X` est encore libre : `p(X)` a une solution (`X ↦ a`), donc
 **21.** Que signifie `t1 \= t2` ?
 
 - **A)** `t1` et `t2` ont des types différents.
-- **B)** `\+ (t1 = t2)` : `t1` et `t2` ne sont pas unifiables.
-- **C)** `t1` est physiquement distinct de `t2` en mémoire.
 - **D)** `t1` est syntaxiquement plus petit que `t2`.
+- **C)** `t1` est physiquement distinct de `t2` en mémoire.
+- **B)** `\+ (t1 = t2)` : `t1` et `t2` ne sont pas unifiables.
 
 <details>
 <summary>Réponse</summary>
 
-**B.** *Concept : `\=` est la négation par l'échec appliquée à l'unification.*
+**D.** *Concept : `\=` est la négation par l'échec appliquée à l'unification.*
 
 A projette une notion de typage étrangère à Prolog, qui n'a pas de système de
 types au sens de Java ou d'OCaml. C décrit l'opposé de `==` (identité
 physique), un opérateur différent qui ne fait pas intervenir la négation par
-l'échec. D invente un ordre syntaxique qui n'a pas de rapport avec `\=`.
+l'échec. B invente un ordre syntaxique qui n'a pas de rapport avec `\=`.
 
 </details>
 

@@ -67,6 +67,41 @@ Chaque question a quatre choix et une réponse repliée qui **nomme le concept**
 avant d'expliquer pourquoi le mauvais choix était plausible. Le nom du concept
 est ce qui se recopie dans le journal d'erreurs.
 
+## Se fabriquer un examen de pratique
+
+Le script `./examen`, à la racine du dépôt, tire un examen des banques et en
+sort le sujet et le corrigé séparément.
+
+```sh
+./examen                       # 20 questions, tous les sujets
+./examen 1                     # examen 1 : OCaml seulement
+./examen 2                     # examen 2 : OCaml, Prolog et théorie
+./examen -n 40 -s prolog       # 40 questions de Prolog
+./examen -g 7                  # reproductible : même graine, même examen
+./examen -o pratique-1         # écrit pratique-1.md et pratique-1-corrige.md
+```
+
+Sans `-o`, tout part sur la sortie standard, corrigé compris — pratique pour un
+coup d'œil, moins pour se tester. Avec `-o`, le corrigé est dans un fichier
+séparé qu'on n'ouvre qu'après.
+
+La graine est affichée dans le titre de chaque examen : la noter permet de
+refaire exactement le même à froid, une semaine plus tard, et de comparer.
+
+**Ajouter ses propres questions est le mode d'emploi normal**, pas une
+extension. Les banques sont du Markdown et le script ramasse tout fichier
+`.md` du dossier `qcm/` — créer `qcm/seance-05.md` suffit, et son nom devient
+un filtre : `./examen -s seance-05`. Nommer les fichiers par séance est ce qui
+rend le dispositif utile en cours de session, puisque l'examen ne porte alors
+que sur la matière déjà vue. Le format est décrit dans
+[`qcm/_modele.md`](qcm/_modele.md) ; les fichiers commençant par `_` sont
+ignorés.
+
+Écrire ses propres questions est d'ailleurs le meilleur usage du dispositif :
+fabriquer trois distracteurs plausibles à partir d'un exercice d'atelier oblige
+à comprendre les erreurs voisines, ce que répondre à des questions déjà écrites
+n'exige pas.
+
 ## Comment s'en servir
 
 1. **Prédire avant de vérifier.** Pour toute question « quel type ? » ou « quel

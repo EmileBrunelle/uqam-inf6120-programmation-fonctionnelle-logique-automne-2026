@@ -225,20 +225,20 @@ langage définit précisément `==` comme un test de partage physique.
 **10.** Que vaut `"abc" == "abc"` ?
 
 - **A)** `Error: string literals cannot be compared physically`
-- **B)** `false`
-- **C)** `true`, car le compilateur partage les littéraux de chaîne identiques.
 - **D)** Cela dépend du drapeau de compilation `-unboxed-strings`.
+- **C)** `true`, car le compilateur partage les littéraux de chaîne identiques.
+- **B)** `false`
 
 <details>
 <summary>Réponse</summary>
 
-**B.** *Concept : deux occurrences syntaxiques d'un même littéral restent deux blocs distincts.*
+**D.** *Concept : deux occurrences syntaxiques d'un même littéral restent deux blocs distincts.*
 
 Vérifié au toplevel : chaque `"abc"` alloue sa propre chaîne, donc `false`. C
 suppose une optimisation de partage de littéraux comme le fait la JVM pour son
 « string pool » — OCaml ne la garantit pas pour des chaînes construites
 séparément dans le code source. A invente une restriction qui n'existe pas :
-`==` s'applique à n'importe quelle valeur, chaînes comprises. D invente un
+`==` s'applique à n'importe quelle valeur, chaînes comprises. B invente un
 drapeau de compilation qui n'existe pas dans la chaîne d'outils du cours.
 
 </details>

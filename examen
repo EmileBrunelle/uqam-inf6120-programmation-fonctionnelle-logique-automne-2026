@@ -1,0 +1,182 @@
+#!/usr/bin/env python3
+"""Fabrique un examen de pratique à partir des banques de `revision/qcm/`.
+
+Les banques sont du Markdown : le générateur n'a pas à changer quand on y
+ajoute des questions. Voir `revision/qcm/_modele.md` pour le format.
+
+    ./examen                       20 questions, tous les sujets
+    ./examen 1                     examen 1 : OCaml seulement
+    ./examen 2                     examen 2 : OCaml, Prolog et théorie
+    ./examen -n 40 -s prolog       40 questions de Prolog
+    ./examen -g 7                  reproductible : même graine, même examen
+    ./examen -o pratique-1         écrit pratique-1.md et pratique-1-corrige.md
+"""
+
+import argparse
+import pathlib
+import random
+import re
+import sys
+
+BANQUES = pathlib.Path(__file__).resolve().parent / "revision" / "qcm"
+CHOIX = re.compile(r"^- \*\*([A-D])\)\*\* (.*)$")
+NUMERO = re.compile(r"^\*\*(\d+)\.\*\*\s*(.*)$")
+VERDICT = re.compile(r"^\*\*([A-D])\.\*\*\s*(.*)$")
+
+# Les deux premiers examens ne portent pas sur la même matière.
+PORTEES = {
+    "1": ("ocaml",),
+    "2": ("ocaml", "prolog", "theorie"),
+}
+
+
+class Question:
+    def __init__(self, source, enonce, choix, bonne, corrige):
+        self.source = source      # nom de la banque, pour le corrigé
+        self.enonce = enonce
+        self.choix = choix        # [(lettre, texte), ...]
+        self.bonne = bonne        # lettre
+        self.corrige = corrige    # explication, telle qu'écrite dans la banque
+
+
+def lire_banque(chemin):
+    """Découpe une banque en questions. Tolère les écarts de mise en page."""
+    questions = []
+    for bloc in chemin.read_text().split("\n---\n"):
+        lignes = bloc.strip().split("\n")
+        enonce, choix, verdict, corrige = [], [], None, []
+        section = "avant"
+        for ligne in lignes:
+            if NUMERO.match(ligne):
+                section = "enonce"
+                enonce.append(NUMERO.match(ligne).group(2))
+                continue
+            if CHOIX.match(ligne):
+                section = "choix"
+                m = CHOIX.match(ligne)
+                choix.append((m.group(1), m.group(2)))
+                continue
+            if ligne.strip() in ("<details>", "</details>", "<summary>Réponse</summary>"):
+                section = "corrige"
+                continue
+            if section == "enonce":
+                enonce.append(ligne)
+            elif section == "corrige":
+                m = VERDICT.match(ligne)
+                if m and verdict is None:
+                    verdict = m.group(1)
+                    corrige.append(m.group(2))
+                else:
+                    corrige.append(ligne)
+
+        if len(choix) == 4 and verdict and enonce:
+            questions.append(Question(
+                chemin.stem,
+                "\n".join(enonce).strip(),
+                choix,
+                verdict,
+                "\n".join(corrige).strip(),
+            ))
+        elif enonce or choix:
+            print(f"  ignoré : question mal formée dans {chemin.name}", file=sys.stderr)
+    return questions
+
+
+def charger(sujets):
+    if not BANQUES.is_dir():
+        sys.exit(f"banques introuvables : {BANQUES}")
+    total = []
+    for f in sorted(BANQUES.glob("*.md")):
+        if f.name.startswith("_"):          # _modele.md et autres gabarits
+            continue
+        if sujets and not any(s.lower() in f.stem.lower() for s in sujets):
+            continue
+        total.extend(lire_banque(f))
+    return total
+
+
+def rendre(questions, titre):
+    sujet = [f"# {titre}", ""]
+    sujet.append(f"{len(questions)} questions à choix multiple, une seule bonne "
+                 "réponse par question.")
+    sujet.append("Répondre sans machine et sans notes, puis vérifier avec le "
+                 "corrigé.")
+    sujet.append("")
+    corrige = [f"# {titre} — corrigé", ""]
+    corrige.append("Noter dans `revision/erreurs.md` le **concept** de chaque "
+                   "question ratée, pas la question.")
+    corrige.append("")
+
+    for n, q in enumerate(questions, 1):
+        sujet.append(f"**{n}.** {q.enonce}")
+        sujet.append("")
+        for lettre, texte in q.choix:
+            sujet.append(f"- **{lettre})** {texte}")
+        sujet.append("")
+        sujet.append("Réponse : ______")
+        sujet.append("")
+        sujet.append("---")
+        sujet.append("")
+
+        corrige.append(f"**{n}.** {q.bonne} — {q.enonce}")
+        corrige.append("")
+        corrige.append(q.corrige)
+        corrige.append("")
+        corrige.append(f"*Banque : {q.source}*")
+        corrige.append("")
+        corrige.append("---")
+        corrige.append("")
+
+    return "\n".join(sujet), "\n".join(corrige)
+
+
+def main():
+    p = argparse.ArgumentParser(
+        description="Fabrique un examen de pratique depuis revision/qcm/.",
+        epilog="Les banques sont du Markdown : y ajouter des questions suffit.",
+    )
+    p.add_argument("examen", nargs="?", choices=sorted(PORTEES),
+                   help="1 (OCaml) ou 2 (OCaml, Prolog et théorie)")
+    p.add_argument("-n", "--nombre", type=int, default=20,
+                   help="nombre de questions (défaut : 20)")
+    p.add_argument("-s", "--sujets", default="",
+                   help="filtre sur le nom des banques, séparé par des virgules")
+    p.add_argument("-g", "--graine", type=int,
+                   help="graine aléatoire, pour refaire le même examen")
+    p.add_argument("-o", "--sortie",
+                   help="écrit SORTIE.md et SORTIE-corrige.md au lieu de la sortie standard")
+    a = p.parse_args()
+
+    sujets = [s.strip() for s in a.sujets.split(",") if s.strip()]
+    if a.examen and not sujets:
+        sujets = list(PORTEES[a.examen])
+
+    questions = charger(sujets)
+    if not questions:
+        sys.exit(f"aucune question ne correspond à {sujets or 'ce filtre'}")
+
+    graine = a.graine if a.graine is not None else random.randrange(10_000)
+    random.Random(graine).shuffle(questions)
+    if a.nombre < len(questions):
+        questions = questions[:a.nombre]
+    else:
+        print(f"note : seulement {len(questions)} questions disponibles",
+              file=sys.stderr)
+
+    titre = f"Examen de pratique {a.examen}" if a.examen else "Examen de pratique"
+    titre += f" — graine {graine}"
+    sujet, corrige = rendre(questions, titre)
+
+    if a.sortie:
+        base = pathlib.Path(a.sortie).with_suffix("")
+        base.with_suffix(".md").write_text(sujet + "\n")
+        pathlib.Path(f"{base}-corrige.md").write_text(corrige + "\n")
+        print(f"{base}.md et {base}-corrige.md — {len(questions)} questions, "
+              f"graine {graine}")
+    else:
+        print(sujet)
+        print(corrige)
+
+
+if __name__ == "__main__":
+    main()
