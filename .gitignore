@@ -1,3 +1,13 @@
 _build/
 *.install
 .merlin
+
+# Sous-produits de compilation OCaml (si on appelle ocamlc à la main
+# plutôt que par dune)
+*.cm[ioxt]
+*.cmti
+*.cmxa
+*.o
+*.a
+*.bc
+*.exe
