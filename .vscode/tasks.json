@@ -10,6 +10,12 @@
       "problemMatcher": []
     },
     {
+      "label": "déboguer le TP courant (ocamldebug)",
+      "type": "shell",
+      "command": "./debug ${relativeFileDirname}",
+      "problemMatcher": []
+    },
+    {
       "label": "dune build",
       "type": "shell",
       "command": "dune build",

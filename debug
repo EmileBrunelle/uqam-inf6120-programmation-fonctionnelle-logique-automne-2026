@@ -1,0 +1,16 @@
+#!/bin/sh
+# ./debug tp1  -> ocamldebug sur le bytecode du TP (défaut : tp1)
+# Puis, dans (ocd) :
+#   break @ Tp1 9   pose un point d'arrêt (module capitalisé, numéro de ligne)
+#   run             lance jusqu'au point d'arrêt
+#   step / next     avance d'un pas (dans / par-dessus les appels)
+#   back            recule (ocamldebug est réversible)
+#   print reste     affiche une variable
+#   backtrace       pile d'appels
+#   quit
+# Un point d'arrêt ne tient que sur un corps de fonction : le code
+# d'initialisation d'un module ne produit pas d'événement de débogage.
+set -e
+tp=$(basename "${1:-tp1}")
+dune build "$tp/$tp.bc"
+exec ocamldebug -I "_build/default/$tp/.$tp.eobjs/byte" "_build/default/$tp/$tp.bc"

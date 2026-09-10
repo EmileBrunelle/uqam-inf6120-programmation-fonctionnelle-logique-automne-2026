@@ -30,18 +30,23 @@ courant ; si l'autocomplétion est morte, c'est presque toujours que
 | Formater | `dune fmt` |
 
 Le bouton ▶ (Code Runner) et `Ctrl+Shift+B` lancent tous deux le fichier
-ouvert. **Pas de débogueur pas-à-pas**, et ce n'est pas un trou dans cette
-installation : earlybird est le seul adaptateur pour VS Code, et sous OCaml 5.5
-il lance le programme sans jamais poser les points d'arrêt. Vérifié le
-2026-09-10 : bytecode avec section `DBUG` complète, chemins non réécrits
-(`map_workspace_root false` dans `dune-project`, sinon dune inscrit
-`/workspace_root`), type `ocaml.earlybird` d'OCaml Platform — le programme
-roule jusqu'au bout quand même. Ne pas installer `hackwaly.ocamlearlybird` :
-gelée depuis 2021, elle refuse même le bytecode d'OCaml 5. Seule piste
-restante si ça devient vital : un switch `opam switch create 4.14.2`, la
-version sous laquelle earlybird a été développé.
+ouvert. Pour déboguer : `./debug tp1` lance `ocamldebug`, le débogueur livré avec
+OCaml. Points d'arrêt, `step`/`next`, `print <var>`, `backtrace`, et il sait
+même reculer (`back`). Les commandes utiles sont en tête du script.
 
-Cela dit, en OCaml on débogue surtout à `utop`, aux types et au `printf`.
+Deux pièges qui coûtent une soirée :
+
+- Un point d'arrêt ne tient que sur un **corps de fonction**. Le code
+  d'initialisation d'un module (`let () = ...`) ne produit aucun événement de
+  débogage — ocamldebug répond « Can't find any event there ».
+- Le module s'appelle `Tp1`, pas `Dune__exe__Tp1`, grâce à
+  `(wrapped_executables false)` dans `dune-project`. Et `(map_workspace_root
+  false)` empêche dune d'inscrire `/workspace_root` à la place des vrais
+  chemins.
+
+Côté VS Code, il n'y a pas de débogueur graphique utilisable : earlybird, le
+seul adaptateur, force opam à **rétrograder le compilateur en 5.4** pour
+s'installer. Vérifié le 2026-09-10 : à éviter, le cours exige 5.5.
 
 Un répertoire par travail, chacun avec son `dune`. Le `main` de chaque TP tient
 ses propres `assert` : `dune test` est donc la vérification de tout le dépôt.

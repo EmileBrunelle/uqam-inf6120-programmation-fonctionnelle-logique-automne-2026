@@ -2,7 +2,8 @@
 ; assertions du main. Copier ce fichier dans tp2/ en changeant le nom.
 
 (executable
- (name tp1))
+ (name tp1)
+ (modes exe byte))
 
 (rule
  (alias runtest)
