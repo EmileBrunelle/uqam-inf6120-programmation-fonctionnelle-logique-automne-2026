@@ -116,12 +116,12 @@ val a : int array = [|1; 2; 3|]
 `ref` est une case mémoire mutable (`contents`), `:=` y écrit, `!` y lit —
 c'est de l'affectation, pas du filtrage ni de la liaison. `array` est une zone
 mémoire mutable à accès indexé constant, à l'opposé d'une liste chaînée
-immuable. `for` et `while` n'ont de sens que pour piloter des effets de bord
+immuable. `for` et `while` n'ont de sens que pour piloter des effets secondaires
 sur ces structures mutables : sans mutation à répéter, une boucle impérative
 n'a rien à faire.
 
 Chacune de ces six constructions casse la non-mutabilité ou introduit un
-effet de bord invisible dans le type de retour — exactement ce que la
+effet secondaire invisible dans le type de retour — exactement ce que la
 transparence référentielle interdit. C'est pourquoi le guide de style noté du
 cours les proscrit : leur usage revient à écrire de l'impératif dans la
 syntaxe d'un langage fonctionnel, et supprime les garanties (raisonnement
@@ -133,7 +133,7 @@ syntaxe d'un langage fonctionnel, et supprime les garanties (raisonnement
 |---|---|
 | Les arguments d'un appel sont toujours évalués avant l'appel, sans alternative — c'est la seule stratégie connue. | OCaml évalue aussi par valeur par défaut, mais l'évaluation paresseuse existe explicitement via `Lazy`, avec un comportement observable différent (l'effet ne se produit qu'à `Lazy.force`). |
 | Modifier une variable ou un champ en place (`x = x + 1`, `obj.field = v`) est l'opération de base de toute boucle. | `ref`, `:=`, `!` existent mais sont proscrits : l'idiome attendu est de reconstruire une nouvelle valeur (récursion avec accumulateur) plutôt que muter. |
-| Une fonction qui imprime, lit un fichier ou modifie une variable globale est une fonction comme les autres, avec un type de retour ordinaire. | Un effet de bord n'est pas invisible : il rend la fonction non pure et casse la transparence référentielle, même si le type de retour semble ordinaire (souvent `unit`, un signal en soi). |
+| Une fonction qui imprime, lit un fichier ou modifie une variable globale est une fonction comme les autres, avec un type de retour ordinaire. | Un effet secondaire n'est pas invisible : il rend la fonction non pure et casse la transparence référentielle, même si le type de retour semble ordinaire (souvent `unit`, un signal en soi). |
 
 ## Pièges de QCM
 
@@ -150,7 +150,7 @@ le calcul pour rester à jour. »** Plausible par confusion avec une fonction
 paresseuse au sens de « recalculée à la demande » sans mémorisation, comme un
 getter recalculé à chaque accès. Faux : `Lazy.force` mémorise le résultat au
 premier appel ; les appels suivants renvoient la valeur enregistrée sans
-réévaluer — l'effet de bord `calcul` ne s'imprime qu'une fois.
+réévaluer — l'effet secondaire `calcul` ne s'imprime qu'une fois.
 
 **« `{ p with x = 9 }` modifie `p` comme le ferait `p.x = 9` en Java. »**
 Plausible parce que la syntaxe évoque une mise à jour de champ. Faux : `with`
@@ -174,9 +174,9 @@ observables qui cassent la pureté et la transparence référentielle, même san
 - L'appel par nécessité n'est correct que sous transparence référentielle —
   c'est pourquoi seuls les langages purs (Haskell) l'utilisent par défaut.
 - Transparence référentielle : remplacer une expression par sa valeur ne
-  change jamais le sens du programme ; un effet de bord la casse.
+  change jamais le sens du programme ; un effet secondaire la casse.
 - Fonction pure : même entrée, même sortie, aucun effet observable — le type
   `unit` en retour est souvent un indice d'impureté.
 - `ref`, `:=`, `!`, `array`, `for`, `while` fonctionnent en OCaml mais sont
   proscrits par le guide de style : ils cassent la non-mutabilité ou
-  introduisent un effet de bord invisible dans le type.
+  introduisent un effet secondaire invisible dans le type.

@@ -598,7 +598,7 @@ A confond « couper les alternatives » avec « arrêter le programme » — `!`
 laisse le but courant continuer normalement, il ne fait qu'empêcher un futur
 retour arrière de revenir en arrière au-delà de son point d'insertion. C
 mélange deux mécanismes distincts : la négation par l'échec teste l'échec
-d'un but sans effet de bord sur les points de choix, la coupure élimine des
+d'un but sans effet secondaire sur les points de choix, la coupure élimine des
 points de choix sans tester quoi que ce soit. D inverse complètement l'effet :
 `!` empêche le retour arrière plutôt que de le déclencher.
 

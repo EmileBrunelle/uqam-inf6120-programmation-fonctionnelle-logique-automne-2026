@@ -359,7 +359,7 @@ les réponses sont des définitions.
 
 | Notion | La formulation à retenir |
 |---|---|
-| Transparence référentielle | Remplacer une expression par sa valeur ne change pas le sens du programme. Cassée par toute affectation ou tout effet de bord. |
+| Transparence référentielle | Remplacer une expression par sa valeur ne change pas le sens du programme. Cassée par toute affectation ou tout effet secondaire. |
 | Fonction pure | Même entrée ⇒ même sortie, aucun effet observable. `print_endline` n'est pas pure ; son type de retour `unit` le trahit. |
 | Machine de Turing | Modèle de calcul de référence. « Turing-complet » = capable de calculer tout ce qu'elle calcule. OCaml et Prolog le sont tous les deux. |
 | Problème de l'arrêt | **Indécidable** : aucun programme ne peut décider, pour tout programme et toute entrée, s'il termine. D'où le fait que le typage ne s'en occupe pas. |

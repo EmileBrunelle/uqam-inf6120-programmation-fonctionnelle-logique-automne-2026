@@ -342,7 +342,7 @@ référentielle* ?
 **A.** *Concept : transparence référentielle.*
 
 B introduit la réaffectation, exactement ce que la transparence référentielle
-exclut — un effet de bord comme une affectation la brise. C généralise à tort
+exclut — un effet secondaire comme une affectation la brise. C généralise à tort
 à l'ordre d'évaluation, une question distincte (stratégies d'évaluation). D
 décrit l'inférence de types, un sujet sans rapport : le recueil illustre la
 transparence référentielle avec l'exemple C `g(f(1))` contre `g(1)`, où l'effet

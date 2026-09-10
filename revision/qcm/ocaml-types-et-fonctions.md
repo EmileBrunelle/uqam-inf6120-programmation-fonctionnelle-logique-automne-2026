@@ -442,7 +442,7 @@ retourner.
 <details>
 <summary>Réponse</summary>
 
-**D.** *Concept : une fonction qui parcourt pour l'effet de bord, pas pour la valeur.*
+**D.** *Concept : une fonction qui parcourt pour l'effet secondaire, pas pour la valeur.*
 
 `List.iter` sert à exécuter une action (typiquement `print_...`) sur chaque
 élément ; son retour est `unit`, car aucune valeur n'est construite. A est le
