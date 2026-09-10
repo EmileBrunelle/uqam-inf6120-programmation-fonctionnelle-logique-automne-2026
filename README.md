@@ -30,10 +30,16 @@ courant ; si l'autocomplétion est morte, c'est presque toujours que
 | Formater | `dune fmt` |
 
 Le bouton ▶ (Code Runner) et `Ctrl+Shift+B` lancent tous deux le fichier
-ouvert. F5 lance le débogueur d'OCaml Platform (`ocaml.earlybird`), qui exige du
-bytecode — d'où `(modes exe byte)` dans chaque `dune`. Ne pas installer
-`hackwaly.ocamlearlybird` : cette extension est gelée depuis 2021 et refuse le
-bytecode d'OCaml 5.
+ouvert. **Pas de débogueur pas-à-pas**, et ce n'est pas un trou dans cette
+installation : earlybird est le seul adaptateur pour VS Code, et sous OCaml 5.5
+il lance le programme sans jamais poser les points d'arrêt. Vérifié le
+2026-09-10 : bytecode avec section `DBUG` complète, chemins non réécrits
+(`map_workspace_root false` dans `dune-project`, sinon dune inscrit
+`/workspace_root`), type `ocaml.earlybird` d'OCaml Platform — le programme
+roule jusqu'au bout quand même. Ne pas installer `hackwaly.ocamlearlybird` :
+gelée depuis 2021, elle refuse même le bytecode d'OCaml 5. Seule piste
+restante si ça devient vital : un switch `opam switch create 4.14.2`, la
+version sous laquelle earlybird a été développé.
 
 Cela dit, en OCaml on débogue surtout à `utop`, aux types et au `printf`.
 
