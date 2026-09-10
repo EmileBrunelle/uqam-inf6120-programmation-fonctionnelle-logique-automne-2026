@@ -111,6 +111,34 @@ s'installer. Vérifié le 2026-09-10 : à éviter, le cours exige 5.5.
 Un répertoire par travail, chacun avec son `dune`. Le `main` de chaque TP tient
 ses propres `assert` : `dune test` est donc la vérification de tout le dépôt.
 
+### Aide-mémoire ocamldebug
+
+Toutes vérifiées sur ce dépôt en 5.5.1.
+
+| Commande | Effet |
+|---|---|
+| `break @ Tp1 9` | point d'arrêt ligne 9 du module `Tp1` (majuscule obligatoire) |
+| `run` | démarre, ou continue jusqu'au prochain point d'arrêt |
+| `next` / `next 3` | avance d'un pas, ou de 3, sans entrer dans les appels |
+| `step` | avance d'un pas en entrant dans les appels |
+| `finish` | termine la fonction courante et remonte |
+| `back` | **recule** d'un pas |
+| `goto 17` | retourne à l'instant 17 (le `Time:` affiché à chaque arrêt) |
+| `print reste` | valeur d'une variable visible dans la trame courante |
+| `backtrace` | pile d'appels |
+| `up` / `down` | monte / descend d'une trame (change ce que `print` voit) |
+| `list` | affiche la source autour de l'arrêt, `<\|b\|>` marquant la position |
+| `info breakpoints` | liste des points d'arrêt |
+| `delete 1` | retire le point d'arrêt numéro 1 |
+| `info events Tp1` | les endroits où un point d'arrêt peut tenir |
+| `help` | liste des commandes |
+| `quit` | sortir (aucune confirmation demandée) |
+
+Le `Time: N` de chaque arrêt est un compteur de pas : c'est ce qui rend `back`
+et `goto` possibles. Un point d'arrêt refusé (« Can't find any event there »)
+signifie qu'il n'y a pas d'événement à cette ligne — `info events` montre les
+lignes valides.
+
 ## Ressources
 
 - [Site du cours](https://inf6120.uqam.ca/) · [Manuel OCaml](https://ocaml.org/manual/)
