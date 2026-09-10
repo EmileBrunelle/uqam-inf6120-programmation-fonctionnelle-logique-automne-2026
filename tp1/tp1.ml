@@ -2,7 +2,7 @@
    Les points d'arrêt ne tiennent que sur un corps de fonction — le code
    d'initialisation d'un module ne produit pas d'événement de débogage. *)
 
-let rec somme lst =
+let rec somme (lst : int list) : int =
   match lst with
   | [] -> 0
   | x :: reste ->

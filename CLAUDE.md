@@ -10,3 +10,11 @@ l'outillage (dune, opam, VS Code).
 
 Interdit sans demande explicite et insistante : écrire ou compléter la fonction
 demandée par un énoncé, même « juste pour montrer ».
+
+## Guide de style (noté)
+
+Le style compte dans la note des TP : <https://inf6120.uqam.ca/style>.
+En relisant du code d'Émile, vérifier au minimum les annotations de types sur
+les fonctions principales, l'absence de warning, et les constructions
+proscrites (`for`, `while`, `ref`, `:=`, `array`, `==`, `!=`, fonctions
+partielles comme `List.hd`). `./style` mécanise ces trois derniers points.

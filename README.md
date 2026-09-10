@@ -148,7 +148,30 @@ et `goto` possibles. Un point d'arrêt refusé (« Can't find any event there »
 signifie qu'il n'y a pas d'événement à cette ligne — `info events` montre les
 lignes valides.
 
+## Guide de style du cours
+
+Le [guide de style](https://inf6120.uqam.ca/style) est **noté** lors de la
+correction des TP. `./style` vérifie ce qui est mécanisable :
+
+| Vérifié par `./style` | Exigence du guide |
+|---|---|
+| `dune build @all` | tout doit compiler, et zéro warning (pénalité sinon) |
+| `dune build @fmt` | indentation et espaces consistants |
+| grep | `for`, `while`, `ref`, `:=`, `array`, `==`, `!=`, `List.hd/tl/nth` proscrits |
+
+Ce que le script ne peut pas juger, à faire à l'œil :
+
+- **Annoter les types** des paramètres et du retour de toute fonction
+  principale : `let somme (lst : int list) : int = ...` (pas nécessaire pour
+  les liaisons locales).
+- `snake_case` pour les liaisons, `PascalCase` pour les constructeurs et les
+  modules, `ALL_CAPS` pour les types de modules.
+- Noms qui ont du sens ; une seule lettre seulement très localement.
+- Fonctions de 1 à 25 lignes, lignes sous 120 caractères, pas de duplication.
+- Définir des types (`type coord = { x : int; y : int }`) plutôt que des
+  tuples anonymes.
+
 ## Ressources
 
-- [Site du cours](https://inf6120.uqam.ca/) · [Manuel OCaml](https://ocaml.org/manual/)
+- [Site du cours](https://inf6120.uqam.ca/) · [Guide de style](https://inf6120.uqam.ca/style) · [Manuel OCaml](https://ocaml.org/manual/)
 - [Documentation dune](https://dune.readthedocs.io/)

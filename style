@@ -1,0 +1,29 @@
+#!/bin/sh
+# ./style  -> vérifie ce que le guide de style du cours note
+#             (https://inf6120.uqam.ca/style)
+# Ne remplace pas la lecture du guide : annotations de types, nommage,
+# duplication et longueur de fonctions restent à juger à l'œil.
+st=0
+
+echo "== compilation et warnings =="
+dune build @all 2>&1 | grep -v "^$" || true
+dune build @all >/dev/null 2>&1 || st=1
+
+echo "== formatage (ocamlformat) =="
+if dune build @fmt >/dev/null 2>&1; then
+  echo "conforme"
+else
+  echo "à reformater : dune fmt"
+  st=1
+fi
+
+echo "== constructions proscrites par le guide =="
+# Faux positifs possibles dans les commentaires et les chaînes : à lire.
+if grep -nE '\b(while|ref|array)\b|\bfor\b|:=|[^<>=!]==|!=|\bList\.(hd|tl|nth)\b|\bOption\.get\b' \
+     */*.ml 2>/dev/null; then
+  st=1
+else
+  echo "aucune"
+fi
+
+exit $st
