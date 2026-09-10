@@ -1,0 +1,10 @@
+; Un répertoire par travail : `dune exec tp1/tp1.exe`, `dune test` lance les
+; assertions du main. Copier ce fichier dans tp2/ en changeant le nom.
+
+(executable
+ (name tp1))
+
+(rule
+ (alias runtest)
+ (action
+  (run %{exe:tp1.exe})))
