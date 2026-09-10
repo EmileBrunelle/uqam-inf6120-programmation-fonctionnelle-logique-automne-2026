@@ -73,8 +73,20 @@ sans `opam env`.
 | REPL avec le code chargé | `dune utop tp1` |
 | Formater | `dune fmt` |
 
-Le bouton ▶ (Code Runner) et `Ctrl+Shift+B` lancent tous deux le fichier
-ouvert. Pour déboguer : `./debug tp1` lance `ocamldebug`, le débogueur livré avec
+Le bouton ▶ (Code Runner), `Ctrl+Shift+B` et **F5** lancent tous le fichier
+ouvert ; **F6** ouvre `ocamldebug` dessus. F5 et F6 viennent de raccourcis
+personnels, hors dépôt — VS Code ne fournit aucun adaptateur de débogage pour
+OCaml, donc F5 demanderait sinon « quel débogueur ? » à chaque fois, sans
+jamais retenir la réponse. À remettre dans
+`~/.config/Code/User/keybindings.json` sur une autre machine :
+
+```json
+{ "key": "f5", "command": "workbench.action.tasks.runTask",
+  "args": "exécuter le fichier courant", "when": "editorLangId == ocaml" },
+{ "key": "f6", "command": "workbench.action.tasks.runTask",
+  "args": "déboguer le TP courant (ocamldebug)", "when": "editorLangId == ocaml" }
+```
+ Pour déboguer : `./debug tp1` lance `ocamldebug`, le débogueur livré avec
 OCaml. Points d'arrêt, `step`/`next`, `print <var>`, `backtrace`, et il sait
 même reculer (`back`). Les commandes utiles sont en tête du script.
 
