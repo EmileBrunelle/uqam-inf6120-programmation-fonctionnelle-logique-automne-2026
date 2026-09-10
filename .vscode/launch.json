@@ -3,14 +3,14 @@
   "configurations": [
     {
       // F5 : point d'arrêt dans le TP dont le fichier est ouvert.
+      // Type fourni par OCaml Platform (extension officielle) ; elle lance
+      // l'adaptateur `ocamlearlybird` du switch opam.
       "name": "Déboguer le TP courant",
-      "type": "ocamlearlybird",
+      "type": "ocaml.earlybird",
       "request": "launch",
       "program": "${workspaceFolder}/_build/default/${relativeFileDirname}/${fileBasenameNoExtension}.bc",
       "cwd": "${workspaceFolder}",
       "source_dirs": ["${workspaceFolder}", "${workspaceFolder}/_build/default"],
-      "onlyDebugGlob": "<${workspaceFolder}/**/*>",
-      "yieldSteps": 4096,
       "console": "integratedTerminal",
       "stopOnEntry": false,
       "preLaunchTask": "compiler le bytecode du fichier courant"

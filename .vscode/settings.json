@@ -7,5 +7,6 @@
     "ocaml": "cd $dir && dune exec ./$fileNameWithoutExt.exe"
   },
   "code-runner.runInTerminal": true,
+
   "code-runner.clearPreviousOutput": true
 }

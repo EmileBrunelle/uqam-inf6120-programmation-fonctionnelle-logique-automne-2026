@@ -30,14 +30,10 @@ courant ; si l'autocomplétion est morte, c'est presque toujours que
 | Formater | `dune fmt` |
 
 Le bouton ▶ (Code Runner) et `Ctrl+Shift+B` lancent tous deux le fichier
-ouvert. F5 lance earlybird (points d'arrêt), qui exige le bytecode — d'où
-`(modes exe byte)` dans chaque `dune`.
-
-L'extension `hackwaly.ocamlearlybird` 1.2.0 refuse le bytecode d'OCaml 5
-(`Caml1999X036`) : sa liste blanche s'arrête à `Caml1999X029`. Correctif, à
-refaire si l'extension se met à jour — ajouter les magies 5.x dans
-`SUPPORTED_MAGICS`, au début de
-`~/.vscode/extensions/hackwaly.ocamlearlybird-*/extension.js`.
+ouvert. F5 lance le débogueur d'OCaml Platform (`ocaml.earlybird`), qui exige du
+bytecode — d'où `(modes exe byte)` dans chaque `dune`. Ne pas installer
+`hackwaly.ocamlearlybird` : cette extension est gelée depuis 2021 et refuse le
+bytecode d'OCaml 5.
 
 Cela dit, en OCaml on débogue surtout à `utop`, aux types et au `printf`.
 
