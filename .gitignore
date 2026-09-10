@@ -14,3 +14,6 @@ _build/
 
 # Notes de passation entre sessions Claude Code
 HANDOFF.md
+
+# Examens de pratique generes par ./examen (reproductibles par leur graine)
+pratique-*.md
