@@ -74,7 +74,7 @@ sans `opam env`.
 | Formater | `dune fmt` |
 
 Le bouton ▶ (Code Runner), `Ctrl+Shift+B` et **F5** lancent tous le fichier
-ouvert ; **F6** ouvre `ocamldebug` dessus. F5 et F6 viennent de raccourcis
+ouvert ; **F6** ouvre `ocamldebug` arrêté sur la ligne du curseur. F5 et F6 viennent de raccourcis
 personnels, hors dépôt — VS Code ne fournit aucun adaptateur de débogage pour
 OCaml, donc F5 demanderait sinon « quel débogueur ? » à chaque fois, sans
 jamais retenir la réponse. À remettre dans
@@ -89,6 +89,10 @@ jamais retenir la réponse. À remettre dans
  Pour déboguer : `./debug tp1` lance `ocamldebug`, le débogueur livré avec
 OCaml. Points d'arrêt, `step`/`next`, `print <var>`, `backtrace`, et il sait
 même reculer (`back`). Les commandes utiles sont en tête du script.
+
+`./debug tp1 9` fait la même chose en ligne de commande. Les points d'arrêt
+cliqués dans la marge de VS Code, eux, ne servent à rien : aucun adaptateur ne
+les relaie à ocamldebug.
 
 Deux pièges qui coûtent une soirée :
 

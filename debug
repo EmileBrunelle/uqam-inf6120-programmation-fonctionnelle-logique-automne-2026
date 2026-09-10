@@ -1,16 +1,26 @@
 #!/bin/sh
-# ./debug tp1  -> ocamldebug sur le bytecode du TP (défaut : tp1)
+# ./debug tp1      -> ocamldebug sur le bytecode du TP (défaut : tp1)
+# ./debug tp1 9    -> pose le point d'arrêt ligne 9 et s'y rend tout de suite
 # Puis, dans (ocd) :
-#   break @ Tp1 9   pose un point d'arrêt (module capitalisé, numéro de ligne)
-#   run             lance jusqu'au point d'arrêt
+#   break @ Tp1 12  pose un autre point d'arrêt (module capitalisé, ligne)
 #   step / next     avance d'un pas (dans / par-dessus les appels)
-#   back            recule (ocamldebug est réversible)
+#   back            recule d'un pas — ocamldebug est réversible
 #   print reste     affiche une variable
 #   backtrace       pile d'appels
 #   quit
 # Un point d'arrêt ne tient que sur un corps de fonction : le code
-# d'initialisation d'un module ne produit pas d'événement de débogage.
+# d'initialisation d'un module ne produit pas d'événement de débogage
+# (« Can't find any event there »).
+# Les points d'arrêt cliqués dans la marge de VS Code ne servent à rien ici :
+# aucun adaptateur de débogage OCaml ne les relaie.
 set -e
 tp=$(basename "${1:-tp1}")
 dune build "$tp/$tp.bc"
-exec ocamldebug -I "_build/default/$tp/.$tp.eobjs/byte" "_build/default/$tp/$tp.bc"
+mod=$(printf '%s' "$tp" | sed 's/^./\U&/')
+dirs="-I _build/default/$tp/.$tp.eobjs/byte"
+if [ -n "$2" ]; then
+  # Les commandes initiales passent par un tube, puis `cat` rend le clavier.
+  { printf 'break @ %s %s\nrun\n' "$mod" "$2"; cat; } | ocamldebug $dirs "_build/default/$tp/$tp.bc"
+else
+  exec ocamldebug $dirs "_build/default/$tp/$tp.bc"
+fi

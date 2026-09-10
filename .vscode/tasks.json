@@ -12,7 +12,7 @@
     {
       "label": "déboguer le TP courant (ocamldebug)",
       "type": "shell",
-      "command": "./debug ${relativeFileDirname}",
+      "command": "./debug ${relativeFileDirname} ${lineNumber}",
       "problemMatcher": []
     },
     {
