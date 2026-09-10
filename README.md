@@ -27,6 +27,15 @@ code --install-extension ocamllabs.ocaml-platform   # LSP : types, complétion, 
 code --install-extension formulahendry.code-runner  # le bouton ▶
 ```
 
+Optionnel : un **profil VS Code** dédié (roue dentée → Profils → Créer un
+profil, vide) évite de charger les extensions des autres projets. Avec quatre
+extensions seulement — `anthropic.claude-code`, `ocamllabs.ocaml-platform`,
+`formulahendry.code-runner`, `ms-ceintl.vscode-language-pack-fr` — installables
+d'un coup par `code --profile <nom> --install-extension …`. Les raccourcis et
+réglages ne sont **pas** partagés entre profils : copier `keybindings.json` et
+`settings.json` de `~/.config/Code/User/` vers
+`~/.config/Code/User/profiles/<id>/`.
+
 Le dépôt apporte le reste : `dune-project` contient les deux réglages sans
 lesquels le débogueur ne fonctionne pas (voir Utilisation), `.vscode/tasks.json`
 les tâches, `.ocamlformat` le style.
