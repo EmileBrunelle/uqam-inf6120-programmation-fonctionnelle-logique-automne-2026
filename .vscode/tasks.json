@@ -10,6 +10,12 @@
       "problemMatcher": []
     },
     {
+      "label": "compiler le bytecode du fichier courant",
+      "type": "shell",
+      "command": "dune build ${relativeFileDirname}/${fileBasenameNoExtension}.bc",
+      "problemMatcher": []
+    },
+    {
       "label": "dune build",
       "type": "shell",
       "command": "dune build",

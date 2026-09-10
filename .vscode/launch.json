@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // F5 : point d'arrêt dans le TP dont le fichier est ouvert.
+      "name": "Déboguer le TP courant",
+      "type": "ocamlearlybird",
+      "request": "launch",
+      "program": "${workspaceFolder}/_build/default/${relativeFileDirname}/${fileBasenameNoExtension}.bc",
+      "cwd": "${workspaceFolder}",
+      "source_dirs": ["${workspaceFolder}", "${workspaceFolder}/_build/default"],
+      "onlyDebugGlob": "<${workspaceFolder}/**/*>",
+      "yieldSteps": 4096,
+      "console": "integratedTerminal",
+      "stopOnEntry": false,
+      "preLaunchTask": "compiler le bytecode du fichier courant"
+    }
+  ]
+}

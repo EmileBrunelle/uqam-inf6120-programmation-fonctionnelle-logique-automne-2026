@@ -30,8 +30,16 @@ courant ; si l'autocomplétion est morte, c'est presque toujours que
 | Formater | `dune fmt` |
 
 Le bouton ▶ (Code Runner) et `Ctrl+Shift+B` lancent tous deux le fichier
-ouvert. **Pas de débogueur pas-à-pas** : earlybird, le seul pour VS Code, ne lit
-pas le bytecode d'OCaml 5. On débogue à `utop`, aux types et au `printf`.
+ouvert. F5 lance earlybird (points d'arrêt), qui exige le bytecode — d'où
+`(modes exe byte)` dans chaque `dune`.
+
+L'extension `hackwaly.ocamlearlybird` 1.2.0 refuse le bytecode d'OCaml 5
+(`Caml1999X036`) : sa liste blanche s'arrête à `Caml1999X029`. Correctif, à
+refaire si l'extension se met à jour — ajouter les magies 5.x dans
+`SUPPORTED_MAGICS`, au début de
+`~/.vscode/extensions/hackwaly.ocamlearlybird-*/extension.js`.
+
+Cela dit, en OCaml on débogue surtout à `utop`, aux types et au `printf`.
 
 Un répertoire par travail, chacun avec son `dune`. Le `main` de chaque TP tient
 ses propres `assert` : `dune test` est donc la vérification de tout le dépôt.
