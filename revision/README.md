@@ -129,6 +129,23 @@ n'exige pas.
    est encore juste est acquis ; le reste n'était que de la mémoire à court
    terme.
 
+## Trous connus, à combler quand le cours y arrive
+
+Les dix ateliers du jeudi (<https://inf6120.uqam.ca/labos/laboXX/>) donnent le
+séquencement réel de la matière. Confrontés aux fiches, deux manques subsistent,
+tous deux sur de la matière de fin de session — les combler d'avance produirait
+du matériel oublié le jour de l'examen.
+
+| Atelier | Manque | Quoi écrire |
+|---------|--------|-------------|
+| 05 — arbres binaires | partiel : la fiche 03 définit le type récursif, mais rien sur les parcours préfixe / infixe / postfixe, la hauteur, les arbres binaires de recherche, ni `map_tree` / `fold_tree` | une fiche `11-arbres.md` |
+| 10 — interprète minimal | absent : aucune fiche ne parle d'AST, d'environnement, de fermeture au sens `VClosure`, de `LetRec` ni de combinateur Y | une fiche `12-interprete.md` |
+| 06 — preuves et révisions | trivial : le type `result` n'est mentionné nulle part | deux lignes dans la fiche 03 |
+
+Vérifié en septembre 2026 : les contraintes `clpfd` de l'atelier 09 et les
+preuves par induction de l'atelier 06 sont, elles, bien couvertes (fiches 10 et
+04).
+
 ## Sources
 
 Les notes de cours complètes du professeur (481 pages) et les deux examens
