@@ -5,19 +5,63 @@ répertoire).
 
 ## Mise en place
 
-Outillage, une fois par machine :
+Reproduction complète de l'environnement, débogueur inclus. Testé sur une seule
+machine — les versions exactes sont plus bas, à vous de juger si ça
+s'applique chez vous.
 
 ```sh
-sudo dnf install opam
-opam init            # crée le switch et ajoute `eval $(opam env)` au profil
+sudo dnf install opam                    # opam 2.5.2 dans Fedora 44
+opam init                                # répondre « y » : ajoute `eval $(opam env)` au shell
+opam switch create 5.5.1                 # la version exigée par le cours
+eval $(opam env)
 opam install dune ocaml-lsp-server ocamlformat utop
 ```
 
-Dans VS Code : extension [OCaml Platform](https://marketplace.visualstudio.com/items?itemName=ocamllabs.ocaml-platform)
-(déjà recommandée par `.vscode/extensions.json`). Elle prend le switch opam
-courant ; si l'autocomplétion est morte, c'est presque toujours que
-`ocaml-lsp-server` manque dans ce switch ou que VS Code a été lancé sans
-`opam env`.
+`ocamldebug` n'est pas dans cette liste : il est livré avec le compilateur,
+donc déjà là.
+
+Extensions VS Code (`.vscode/extensions.json` les propose à l'ouverture) :
+
+```sh
+code --install-extension ocamllabs.ocaml-platform   # LSP : types, complétion, erreurs, format
+code --install-extension formulahendry.code-runner  # le bouton ▶
+```
+
+Le dépôt apporte le reste : `dune-project` contient les deux réglages sans
+lesquels le débogueur ne fonctionne pas (voir Utilisation), `.vscode/tasks.json`
+les tâches, `.ocamlformat` le style.
+
+### À ne pas faire
+
+- **`opam install earlybird`** (l'adaptateur de débogage pour VS Code) :
+  opam rétrograde le compilateur en 5.4.1 pour satisfaire ses dépendances, sans
+  le dire clairement. Le cours exige 5.5. Vérifié le 2026-09-10.
+- **`hackwaly.ocamlearlybird`** : extension gelée depuis mars 2021, elle refuse
+  le bytecode d'OCaml 5 (sa liste blanche s'arrête à la magie `Caml1999X029`,
+  OCaml 5.5 produit `Caml1999X036`).
+- **Installer OCaml depuis les dépôts Fedora** (`dnf install ocaml`) : 5.4.0,
+  plus vieux que ce que demande le cours, et deux compilateurs qui se disputent
+  le `PATH`.
+
+Si l'autocomplétion est morte dans VS Code, c'est presque toujours que
+`ocaml-lsp-server` manque dans le switch courant, ou que VS Code a été lancé
+sans `opam env`.
+
+### Environnement de référence
+
+| | Version |
+|---|---|
+| Fedora | 44 (noyau 7.1.13) |
+| opam | 2.5.2 (paquet Fedora) |
+| OCaml | 5.5.1 (`ocaml-base-compiler`, switch `default`) |
+| dune | 3.24.2 |
+| ocaml-lsp-server | 1.27.0 |
+| ocamlformat | 0.29.0 |
+| utop | 2.17.0 |
+| ocamldebug | 5.5.1 (livré avec le compilateur) |
+| VS Code | 1.136.2 |
+| OCaml Platform | 2.3.0 |
+| Code Runner | 0.12.2 |
 
 ## Utilisation
 
