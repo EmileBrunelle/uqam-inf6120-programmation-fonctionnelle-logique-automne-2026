@@ -2,16 +2,23 @@
   "version": "2.0.0",
   "tasks": [
     {
+      // Ctrl+Shift+B : compile et exécute le TP dont le fichier est ouvert.
+      "label": "exécuter le fichier courant",
+      "type": "shell",
+      "command": "dune exec ${relativeFileDirname}/${fileBasenameNoExtension}.exe",
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
       "label": "dune build",
       "type": "shell",
       "command": "dune build",
-      "group": { "kind": "build", "isDefault": true },
       "problemMatcher": []
     },
     {
       "label": "dune test",
       "type": "shell",
-      "command": "dune test",
+      "command": "dune test --force",
       "group": { "kind": "test", "isDefault": true },
       "problemMatcher": []
     }

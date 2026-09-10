@@ -29,6 +29,10 @@ courant ; si l'autocomplétion est morte, c'est presque toujours que
 | REPL avec le code chargé | `dune utop tp1` |
 | Formater | `dune fmt` |
 
+Le bouton ▶ (Code Runner) et `Ctrl+Shift+B` lancent tous deux le fichier
+ouvert. **Pas de débogueur pas-à-pas** : earlybird, le seul pour VS Code, ne lit
+pas le bytecode d'OCaml 5. On débogue à `utop`, aux types et au `printf`.
+
 Un répertoire par travail, chacun avec son `dune`. Le `main` de chaque TP tient
 ses propres `assert` : `dune test` est donc la vérification de tout le dépôt.
 
