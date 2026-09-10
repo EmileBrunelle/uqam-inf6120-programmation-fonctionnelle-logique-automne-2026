@@ -23,6 +23,9 @@
 - [Prolog : listes et CLP](#prolog--listes-et-clp)
 - [Pièges, un par ligne](#pièges-un-par-ligne)
 - [Guide de style — interdits](#guide-de-style--interdits)
+- [D'un dev Java vers OCaml](#dun-dev-java-vers-ocaml)
+- [OCaml vs Prolog : ne pas les mélanger](#ocaml-vs-prolog--ne-pas-les-mélanger)
+- [D'un dev Java vers Prolog](#dun-dev-java-vers-prolog)
 
 ---
 
@@ -236,7 +239,7 @@ calcul
 ## Modules et séquences
 
 - Chaque fichier `.ml` **est** un module (`A.ml` → module `A`), sans déclaration. Accès : `A.x` ou `open A`.
-- `unit` : type à une valeur `()`, marque un effet de bord.
+- `unit` : type à une valeur `()`, marque un effet secondaire.
 - `E1; E2` : `E1 : unit` obligatoire, valeur du tout = celle de `E2`. **Séquence moins prioritaire que `if`** : `if C then f x; g x` exécute `g x` dans tous les cas — utiliser `begin ... end` pour grouper sous le `then`.
 - `dune build` compile, `dune exec NAME` exécute, `dune utop` ouvre l'interpréteur avec les modules du projet en `PROJECT.MODULE.`.
 
@@ -384,3 +387,162 @@ Proscrits (mécanisés par `./style`), sauf mention explicite « proscrit » en
 exemple de piège : `for`, `while`, `ref`, `:=`, `array`, `==`, `!=`, et les
 fonctions partielles (`List.hd`, `List.tl`, `List.nth`). Toujours annoter les
 types des fonctions principales ; zéro warning à la compilation.
+
+## D'un dev Java vers OCaml
+
+| Concept Java | Équivalent OCaml | La nuance qui mord |
+|---|---|---|
+| `final` partout | immuabilité par défaut | pas d'effort à faire ; `ref`/`:=` sont l'exception proscrite, pas la règle |
+| `null` | `'a option` (`None` / `Some x`) | `NullPointerException` impossible ; le filtrage force à traiter `None` |
+| Surcharge de méthodes | absente | l'inférence de types choisit un seul type par nom ; deux fonctions de même nom se masquent (ombrage), ne coexistent pas |
+| `interface` / hiérarchie de classes | type somme + filtrage de motifs | fermé et vérifié à la compilation : `match` exhaustif remplace le `instanceof` en cascade |
+| Generics `<T>` | `'a`, `'b`, ... | inférés, jamais déclarés explicitement dans la signature |
+| `switch` (avec `default` par prudence) | `match` | exhaustivité vérifiée par le compilateur (`Warning 8`) ; pas de `default` nécessaire ni de `break` |
+| `equals()` / `==` | `=` / `==` | `=` compare la **structure** (équivalent d'`equals`) ; `==` compare l'**identité physique** — et `==` est proscrit par le guide de style du cours |
+| Boucle `for` / `while` | récursion ou `List.fold_left` | `for`/`while` proscrits ; l'accumulateur remplace la variable de boucle mutable |
+| Exceptions (`try`/`catch`) | `try ... with` | même idée, non détaillée ici — voir les fiches existantes |
+
+Le pivot : **les Streams**.
+
+| Java (`Stream<T>`) | OCaml (`'a list`) | Nuance |
+|---|---|---|
+| `.stream().map(f)` | `List.map f` | identique dans l'esprit |
+| `.filter(p)` | `List.filter p` | identique |
+| `.reduce(init, op)` | `List.fold_left op init` | `reduce` cache l'accumulateur ; `fold_left` l'expose comme premier argument explicite |
+| `.collect(Collectors.toList())` | rien | une liste OCaml est déjà une collection concrète, pas un pipeline à matérialiser |
+| `.anyMatch(p)` / `.allMatch(p)` | `List.exists p` / `List.for_all p` | identique |
+| `.findFirst()` | `List.find_opt p` | renvoie `'a option`, pas un `Optional<T>` qu'il faut encore déballer différemment |
+| `Optional<T>` | `'a option` | même rôle ; `Some`/`None` se filtrent avec `match`, pas de `.get()` risqué |
+
+```ocaml
+# List.map (fun x -> x * 2) [1; 2; 3];;
+- : int list = [2; 4; 6]
+# List.filter (fun x -> x mod 2 = 0) [1; 2; 3; 4];;
+- : int list = [2; 4]
+# List.fold_left (fun acc x -> acc + x) 0 [1; 2; 3];;
+- : int = 6
+# List.find_opt (fun x -> x > 1) [1; 2; 3];;
+- : int option = Some 2
+# let a = [1; 2] and b = [1; 2] in a = b;;
+- : bool = true
+# let a = [1; 2] and b = [1; 2] in a == b;;
+- : bool = false      (* deux listes distinctes en mémoire, mêmes éléments *)
+```
+
+Un Stream Java est **paresseux et à usage unique** (un deuxième `.forEach` sur
+le même stream lève une exception) ; une liste OCaml est **stricte et
+réutilisable** à volonté, sans pipeline à relancer.
+
+Le cours commence par le versant impératif : boucles et effets secondaires.
+
+| Java (impératif) | OCaml | Nuance |
+|---|---|---|
+| `for (int i = 0; i < n; i++)` avec compteur | `List.init n f`, ou récursion terminale avec accumulateur | le compteur devient un paramètre de la fonction récursive, jamais une variable mutée |
+| `for (T x : liste)` pour un effet secondaire | `List.iter f liste` | `f` rend `unit` ; rien n'est construit |
+| `for (T x : liste)` pour construire | `List.map f liste` | construit une nouvelle liste, ne mute rien |
+| `while (cond sur état mutable)` | récursion terminale, l'état passe en paramètre | condition d'arrêt = motif de base (souvent `0` ou `[]`) |
+| accumulation dans une variable locale mutable | paramètre accumulateur, ou `List.fold_left` | même rôle, porté par un argument plutôt qu'une case mémoire réécrite |
+
+```ocaml
+# let rec somme_jusqua n acc = if n = 0 then acc else somme_jusqua (n - 1) (acc + n);;
+val somme_jusqua : int -> int -> int = <fun>
+# somme_jusqua 5 0;;
+- : int = 15
+# List.init 5 (fun i -> i * i);;
+- : int list = [0; 1; 4; 9; 16]
+```
+
+La nuance de fond : en Java, la boucle produit son résultat en **mutant**
+quelque chose (le compteur, l'accumulateur, la collection). En OCaml, la
+valeur est **retournée**, l'état est **passé en paramètre** — rien n'est
+réécrit en place. Une fonction sans effet secondaire rend le même résultat
+pour les mêmes arguments : elle est testable isolément et remplaçable par sa
+valeur (transparence référentielle).
+
+`System.out.println` renvoie `void` ; `print_endline` renvoie `unit`. La
+différence n'est pas cosmétique : `unit` est une **vraie valeur** (`()`),
+pas un trou dans le système de types — une fonction qui la renvoie peut
+quand même être passée à `List.map` ou stockée.
+
+```ocaml
+# print_endline "test";;
+test
+- : unit = ()
+```
+
+`for`, `while`, `ref` et `:=` restent le point de **départ** Java à traduire
+ici, jamais une solution OCaml — le guide de style du cours les proscrit.
+
+## OCaml vs Prolog : ne pas les mélanger
+
+| | OCaml | Prolog |
+|---|---|---|
+| `=` | liaison (`let`) puis, en expression, égalité **structurelle** | **unification** bidirectionnelle : instancie les variables des deux côtés pour rendre les termes identiques |
+| Variable | liaison immuable, minuscule, portée lexicale | variable logique, **majuscule** initiale, instanciable une seule fois par branche de résolution |
+| Décomposition de liste | `x :: reste` (motif de filtrage) | `[T \| Q]` (unification de terme) — même idée, syntaxe et mécanisme différents |
+| Ce qui répond | une fonction retourne **une** valeur | un prédicat **réussit ou échoue**, et peut fournir **plusieurs** solutions par retour arrière (`;`, `findall/3`) |
+| Ordre d'évaluation | strict par défaut, argument avant appel | résolution SLD : clauses dans l'ordre du texte, profondeur d'abord, retour arrière au dernier point de choix |
+| Types | déclarés ou inférés, vérifiés statiquement | **aucun type déclaré** ; un terme s'unifie avec n'importe quel autre compatible |
+| `_` | motif joker, ignore la valeur, même rôle qu'en Prolog | variable anonyme, jamais liée nulle part, jamais réutilisée pour la même valeur |
+| Arithmétique | `+`, `-`, ... évalués immédiatement | `#=`, `#\=`, `#<`, ... (clpfd) posent une **contrainte**, résolue dans les deux sens ; `is` (ISO) est hors cours |
+
+```ocaml
+# match [1; 2; 3] with x :: reste -> (x, reste) | [] -> (0, []);;
+- : int * int list = (1, [2; 3])
+```
+
+```prolog
+?- findall(X, member(X, [1,2,3]), R).
+R = [1, 2, 3].
+?- 2 + 3 #= Y.
+Y = 5.
+```
+
+(vérifié : `member/2` énumère les trois éléments par retour arrière, capturés
+ici par `findall/3` ; `2 + 3 #= Y` résout la contrainte clpfd et lie `Y`.)
+
+Le piège le plus fréquent : lire un `X = ...` de Prolog comme une affectation
+OCaml. `X = 1 + 2` ne calcule rien — il unifie `X` au terme non évalué `1+2`
+(voir la section Prolog : bases pour `#=` vs `is`).
+
+## D'un dev Java vers Prolog
+
+Le saut le plus violent des trois : plusieurs notions Java n'ont tout
+simplement **pas d'équivalent**, plutôt qu'un équivalent à traduire terme à
+terme.
+
+| Réflexe Java | Ce qui existe en Prolog à la place |
+|---|---|
+| Appeler une méthode et récupérer **une** valeur de retour | poser un but qui **réussit ou échoue**, et peut donner **plusieurs** solutions par retour arrière |
+| Paramètres d'entrée séparés de la valeur de sortie | un prédicat est une **relation** : les mêmes arguments servent d'entrée ou de sortie selon ce qui est instancié |
+| Affectation `x = 5`, réaffectable | **unification** : une variable logique s'instancie **une seule fois** par branche de résolution, jamais réaffectée |
+| `if / else` | plusieurs clauses essayées **dans l'ordre**, plus le retour arrière si la suite échoue |
+| Boucle sur une collection | récursion sur la structure de la liste, `[T\|R]` |
+| `null` | aucun équivalent : un but **échoue**, il ne renvoie rien |
+| Typage statique (`int`, generics, ...) | aucun type déclaré ; un terme s'unifie avec tout terme compatible |
+| Surcharge de méthodes | un prédicat est identifié par **nom et arité** : `concatenation/3` et une éventuelle `concatenation/2` seraient deux prédicats distincts |
+| Arithmétique évaluée (`+`) | `#=` (clpfd), contrainte posée et résolue dans les deux sens ; `is` (ISO) est hors cours |
+
+La relation, pas la fonction — un seul prédicat, utilisable dans les deux
+sens :
+
+```prolog
+concatenation([], L, L).
+concatenation([X|L1], L2, [X|L3]) :- concatenation(L1, L2, L3).
+```
+
+```prolog
+?- concatenation([1,2],[3,4],R).
+R = [1, 2, 3, 4].
+?- findall(A-B, concatenation(A,B,[1,2,3]), Decomps).
+Decomps = [[]-[1, 2, 3], [1]-[2, 3], [1, 2]-[3], [1, 2, 3]-[]].
+```
+
+(vérifié : posé avec les deux premiers arguments instanciés, `concatenation/3`
+calcule la concaténation ; posé avec le troisième seul, il énumère par retour
+arrière les quatre façons de le décomposer — impossible avec une méthode Java
+`concat(a, b)` qui ne fonctionne que dans un sens.)
+
+Un prédicat Java équivalent n'existe pas : une méthode ne peut ni échouer au
+sens logique, ni offrir plusieurs résultats pour un seul appel — elle
+retourne une valeur, lève une exception, ou boucle.
