@@ -11,3 +11,6 @@ _build/
 *.a
 *.bc
 *.exe
+
+# Notes de passation entre sessions Claude Code
+HANDOFF.md
