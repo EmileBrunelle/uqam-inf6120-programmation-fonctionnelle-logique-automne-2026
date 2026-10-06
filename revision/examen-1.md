@@ -59,5 +59,7 @@ listes*, *Pièges, un par ligne*.
 
 ## Veille de l'examen
 
-- Dormir. Relire [`pieges.md`](pieges.md) plutôt qu'une nouvelle fiche.
+- **Pratique et Théorie :** Consolider avec [`revision-examen-1-theorie.md`](revision-examen-1-theorie.md) (λ-calcul, portée, exemples concrets).
+- **Derniers pièges :** Parcourir la [`revue-adversariale.md`](revue-adversariale.md) (basée sur l'intra 2024) et relire [`pieges.md`](pieges.md).
+- Dormir.
 - Vérifier la salle et l'heure, et ce qui est permis (notes manuscrites ?).
