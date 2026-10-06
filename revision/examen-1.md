@@ -15,16 +15,16 @@ Site du cours (notes PDF, exemple d'examen et corrigé) :
 
 | # | Fiche | Pourquoi |
 |---|-------|----------|
-| 1 | `fiches/01-types-et-inference.md` | Inférer un type est la question la plus fréquente |
-| 2 | `fiches/02-fonctions-et-ordre-superieur.md` | Curryfication, application partielle, `map` / `filter` / `fold` |
-| 3 | `fiches/04-recursion-et-filtrage.md` | Récursion terminale, filtrage exhaustif |
-| 4 | `fiches/05-listes.md` | Coût de `::` et de `@`, fonctions de `List` |
-| 5 | `fiches/03-types-de-donnees.md` | Types produit et somme, enregistrements |
-| 6 | `fiches/07-evaluation-et-purete.md` | Effets secondaires, évaluation paresseuse |
-| 7 | `pieges.md` | Les erreurs classiques |
-| 8 | `fiches/06-modules-et-projet.md` | Si le temps le permet |
+| 1 | [`fiches/01-types-et-inference.md`](fiches/01-types-et-inference.md) | Inférer un type est la question la plus fréquente |
+| 2 | [`fiches/02-fonctions-et-ordre-superieur.md`](fiches/02-fonctions-et-ordre-superieur.md) | Curryfication, application partielle, `map` / `filter` / `fold` |
+| 3 | [`fiches/04-recursion-et-filtrage.md`](fiches/04-recursion-et-filtrage.md) | Récursion terminale, filtrage exhaustif |
+| 4 | [`fiches/05-listes.md`](fiches/05-listes.md) | Coût de `::` et de `@`, fonctions de `List` |
+| 5 | [`fiches/03-types-de-donnees.md`](fiches/03-types-de-donnees.md) | Types produit et somme, enregistrements |
+| 6 | [`fiches/07-evaluation-et-purete.md`](fiches/07-evaluation-et-purete.md) | Effets secondaires, évaluation paresseuse |
+| 7 | [`pieges.md`](pieges.md) | Les erreurs classiques |
+| 8 | [`fiches/06-modules-et-projet.md`](fiches/06-modules-et-projet.md) | Si le temps le permet |
 
-Pressé : `aide-memoire.md` seul, sections *Inférence de types*, *Curryfication
+Pressé : [`aide-memoire.md`](aide-memoire.md) seul, sections *Inférence de types*, *Curryfication
 et ordre supérieur*, *Filtrage de motifs*, *Récursion terminale*, *Coût des
 listes*, *Pièges, un par ligne*.
 
@@ -34,7 +34,7 @@ listes*, *Pièges, un par ligne*.
 2. Générer un examen blanc, sans notes :
    `./examen 1 -n 30 -g <nombre> -s multiple -o pratique-N`
 3. Corriger avec `pratique-N-corrige.md`. Pour chaque erreur : écrire une
-   ligne dans `erreurs.md` (la question, ce que tu as coché, pourquoi c'était
+   ligne dans [`erreurs.md`](erreurs.md) (la question, ce que tu as coché, pourquoi c'était
    faux).
 4. Relire la fiche du sujet manqué, puis refaire un examen avec une autre graine.
 5. Faire l'examen de pratique du prof
@@ -56,5 +56,5 @@ listes*, *Pièges, un par ligne*.
 
 ## Veille de l'examen
 
-- Dormir. Relire `pieges.md` plutôt qu'une nouvelle fiche.
+- Dormir. Relire [`pieges.md`](pieges.md) plutôt qu'une nouvelle fiche.
 - Vérifier la salle et l'heure, et ce qui est permis (notes manuscrites ?).
