@@ -3,6 +3,9 @@
 Travaux et exercices en OCaml (le volet Prolog viendra dans son propre
 répertoire).
 
+Site du cours : <https://www.giraudo.uqam.ca/Teaching/INF6120/2026-09/INF6120.html>
+(notes de cours, exemple d'examen et son corrigé, entente d'évaluation).
+
 ## Mise en place
 
 Reproduction complète de l'environnement, débogueur inclus. Testé sur une seule

@@ -8,6 +8,9 @@ s'appliquent », sans indication du nombre de bonnes (0 à 4). Chaque choix se
 juge donc seul : vrai ou faux, indépendamment des autres. « Aucune » est une
 réponse possible.
 
+Site du cours (notes PDF, exemple d'examen et corrigé) :
+<https://www.giraudo.uqam.ca/Teaching/INF6120/2026-09/INF6120.html>
+
 ## Ordre de lecture
 
 | # | Fiche | Pourquoi |
