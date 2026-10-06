@@ -12,4 +12,4 @@ let rec somme (lst : int list) : int =
 let () =
   assert (somme [] = 0);
   assert (somme [ 1; 2; 3 ] = 6);
-  print_endline "tp1 : ok"
+  print_endline "bac_a_sable : ok"

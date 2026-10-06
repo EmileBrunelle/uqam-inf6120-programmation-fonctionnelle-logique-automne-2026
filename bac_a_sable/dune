@@ -1,0 +1,11 @@
+; Un répertoire par travail : `dune exec bac_a_sable/bac_a_sable.exe`, `dune test` lance les
+; assertions du main. Copier ce fichier dans tp2/ en changeant le nom.
+
+(executable
+ (name bac_a_sable)
+ (modes exe byte))
+
+(rule
+ (alias runtest)
+ (action
+  (run %{exe:bac_a_sable.exe})))

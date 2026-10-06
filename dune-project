@@ -4,6 +4,6 @@
 ; reproductibles) et le débogueur ne retrouve plus les sources.
 (map_workspace_root false)
 
-; Sans ceci, le module de `tp1/tp1.ml` s'appelle `Dune__exe__Tp1` dans le
-; débogueur au lieu de `Tp1`.
+; Sans ceci, le module de `bac_a_sable/bac_a_sable.ml` s'appelle `Dune__exe__Bac_a_sable` dans le
+; débogueur au lieu de `Bac_a_sable`.
 (wrapped_executables false)

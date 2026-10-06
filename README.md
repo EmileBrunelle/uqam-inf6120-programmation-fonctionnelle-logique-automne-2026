@@ -77,9 +77,9 @@ sans `opam env`.
 | | Commande |
 |---|---|
 | Compiler tout | `dune build` |
-| Exécuter un TP | `dune exec tp1/tp1.exe` |
+| Exécuter un TP | `dune exec bac_a_sable/bac_a_sable.exe` |
 | Lancer les assertions | `dune test` |
-| REPL avec le code chargé | `dune utop tp1` |
+| REPL avec le code chargé | `dune utop bac_a_sable` |
 | Formater | `dune fmt` |
 
 Le bouton ▶ (Code Runner), `Ctrl+Shift+B` et **F5** lancent tous le fichier
@@ -95,11 +95,11 @@ jamais retenir la réponse. À remettre dans
 { "key": "f6", "command": "workbench.action.tasks.runTask",
   "args": "déboguer le TP courant (ocamldebug)", "when": "editorLangId == ocaml" }
 ```
- Pour déboguer : `./debug tp1` lance `ocamldebug`, le débogueur livré avec
+ Pour déboguer : `./debug bac_a_sable` lance `ocamldebug`, le débogueur livré avec
 OCaml. Points d'arrêt, `step`/`next`, `print <var>`, `backtrace`, et il sait
 même reculer (`back`). Les commandes utiles sont en tête du script.
 
-`./debug tp1 9` fait la même chose en ligne de commande. Les points d'arrêt
+`./debug bac_a_sable 9` fait la même chose en ligne de commande. Les points d'arrêt
 cliqués dans la marge de VS Code, eux, ne servent à rien : aucun adaptateur ne
 les relaie à ocamldebug.
 
@@ -108,7 +108,7 @@ Deux pièges qui coûtent une soirée :
 - Un point d'arrêt ne tient que sur un **corps de fonction**. Le code
   d'initialisation d'un module (`let () = ...`) ne produit aucun événement de
   débogage — ocamldebug répond « Can't find any event there ».
-- Le module s'appelle `Tp1`, pas `Dune__exe__Tp1`, grâce à
+- Le module s'appelle `Bac_a_sable`, pas `Dune__exe__Bac_a_sable`, grâce à
   `(wrapped_executables false)` dans `dune-project`. Et `(map_workspace_root
   false)` empêche dune d'inscrire `/workspace_root` à la place des vrais
   chemins.
@@ -126,7 +126,7 @@ Toutes vérifiées sur ce dépôt en 5.5.1.
 
 | Commande | Effet |
 |---|---|
-| `break @ Tp1 9` | point d'arrêt ligne 9 du module `Tp1` (majuscule obligatoire) |
+| `break @ Bac_a_sable 9` | point d'arrêt ligne 9 du module `Bac_a_sable` (majuscule obligatoire) |
 | `run` | démarre, ou continue jusqu'au prochain point d'arrêt |
 | `next` / `next 3` | avance d'un pas, ou de 3, sans entrer dans les appels |
 | `step` | avance d'un pas en entrant dans les appels |
@@ -139,7 +139,7 @@ Toutes vérifiées sur ce dépôt en 5.5.1.
 | `list` | affiche la source autour de l'arrêt, `<\|b\|>` marquant la position |
 | `info breakpoints` | liste des points d'arrêt |
 | `delete 1` | retire le point d'arrêt numéro 1 |
-| `info events Tp1` | les endroits où un point d'arrêt peut tenir |
+| `info events Bac_a_sable` | les endroits où un point d'arrêt peut tenir |
 | `help` | liste des commandes |
 | `quit` | sortir (aucune confirmation demandée) |
 

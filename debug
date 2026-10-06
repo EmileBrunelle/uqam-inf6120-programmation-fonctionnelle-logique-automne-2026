@@ -1,8 +1,8 @@
 #!/bin/sh
-# ./debug tp1      -> ocamldebug sur le bytecode du TP (défaut : tp1)
-# ./debug tp1 9    -> pose le point d'arrêt ligne 9 et s'y rend tout de suite
+# ./debug bac_a_sable      -> ocamldebug sur le bytecode du TP (défaut : bac_a_sable)
+# ./debug bac_a_sable 9    -> pose le point d'arrêt ligne 9 et s'y rend tout de suite
 # Puis, dans (ocd) :
-#   break @ Tp1 12  pose un autre point d'arrêt (module capitalisé, ligne)
+#   break @ Bac_a_sable 12  pose un autre point d'arrêt (module capitalisé, ligne)
 #   step / next     avance d'un pas (dans / par-dessus les appels)
 #   back            recule d'un pas — ocamldebug est réversible
 #   print reste     affiche une variable
@@ -14,7 +14,7 @@
 # Les points d'arrêt cliqués dans la marge de VS Code ne servent à rien ici :
 # aucun adaptateur de débogage OCaml ne les relaie.
 set -e
-tp=$(basename "${1:-tp1}")
+tp=$(basename "${1:-bac_a_sable}")
 dune build "$tp/$tp.bc"
 mod=$(printf '%s' "$tp" | sed 's/^./\U&/')
 dirs="-I _build/default/$tp/.$tp.eobjs/byte"
