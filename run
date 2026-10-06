@@ -1,0 +1,6 @@
+#!/bin/sh
+# Lance rapidement un exercice sans s'embêter avec l'extension .exe
+set -e
+target="${1:-bac_a_sable}"
+name=$(basename "$target")
+exec dune exec "$target/$name.exe"

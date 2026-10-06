@@ -77,7 +77,7 @@ sans `opam env`.
 | | Commande |
 |---|---|
 | Compiler tout | `dune build` |
-| Exécuter un TP | `dune exec bac_a_sable/bac_a_sable.exe` |
+| Exécuter un TP | `./run bac_a_sable` |
 | Lancer les assertions | `dune test` |
 | REPL avec le code chargé | `dune utop bac_a_sable` |
 | Formater | `dune fmt` |
