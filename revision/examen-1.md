@@ -24,6 +24,9 @@ Site du cours (notes PDF, exemple d'examen et corrigé) :
 | 7 | [`pieges.md`](pieges.md) | Les erreurs classiques |
 | 8 | [`fiches/06-modules-et-projet.md`](fiches/06-modules-et-projet.md) | Si le temps le permet |
 
+**Ateliers (labos 1 à 6)** : non notés, mais ils sont la matière de l'examen.
+Énoncés et solutions commentées : [`../labos/README.md`](../labos/README.md).
+
 Pressé : [`aide-memoire.md`](aide-memoire.md) seul, sections *Inférence de types*, *Curryfication
 et ordre supérieur*, *Filtrage de motifs*, *Récursion terminale*, *Coût des
 listes*, *Pièges, un par ligne*.
