@@ -3,9 +3,6 @@
 Travaux et exercices en OCaml (le volet Prolog viendra dans son propre
 répertoire).
 
-Site du cours : <https://www.giraudo.uqam.ca/Teaching/INF6120/2026-09/INF6120.html>
-(notes de cours, exemple d'examen et son corrigé, entente d'évaluation).
-
 ## Mise en place
 
 Reproduction complète de l'environnement, débogueur inclus. Testé sur une seule
@@ -176,5 +173,5 @@ Ce que le script ne peut pas juger, à faire à l'œil :
 
 ## Ressources
 
-- [Site du cours](https://inf6120.uqam.ca/) · [Guide de style](https://inf6120.uqam.ca/style) · [Manuel OCaml](https://ocaml.org/manual/)
+- [Site du cours](https://www.giraudo.uqam.ca/Teaching/INF6120/2026-09/INF6120.html) (notes, exemple d'examen) · [inf6120.uqam.ca](https://inf6120.uqam.ca/) (ateliers) · [Guide de style](https://inf6120.uqam.ca/style) · [Manuel OCaml](https://ocaml.org/manual/)
 - [Documentation dune](https://dune.readthedocs.io/)
