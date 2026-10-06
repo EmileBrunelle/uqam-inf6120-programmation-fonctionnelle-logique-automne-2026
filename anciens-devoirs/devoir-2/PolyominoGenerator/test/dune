@@ -1,0 +1,6 @@
+; Pas demandé par l'énoncé : les exemples utop de l'énoncé, sous forme
+; d'assertions. `dune test` les exécute.
+
+(test
+ (name Tests)
+ (libraries PolyominoGenerator))

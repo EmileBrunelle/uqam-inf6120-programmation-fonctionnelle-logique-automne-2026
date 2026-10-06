@@ -1,0 +1,15 @@
+(lang dune 3.24)
+
+; Devoir 2 (INF6120, automne 2025) — solution d'entraînement.
+; Auteur : Émile Brunelle — code permanent : à compléter.
+
+(name PolyominoGenerator)
+
+(generate_opam_files true)
+
+(authors "Émile Brunelle")
+
+(package
+ (name PolyominoGenerator)
+ (synopsis "Générateur aléatoire de polyominos et analyse en Prolog")
+ (depends ocaml dune))

@@ -1,0 +1,4 @@
+(executable
+ (name Main)
+ (public_name PolyominoGenerator)
+ (libraries PolyominoGenerator unix))

@@ -1,0 +1,13 @@
+(lang dune 3.24)
+
+(name CellularAutomata)
+
+; Le sujet demande prénom, nom et code permanent ici et dans chaque .ml.
+(authors "Émile Brunelle (code permanent à compléter)")
+
+(generate_opam_files true)
+
+(package
+ (name CellularAutomata)
+ (synopsis "Devoir 1 INF6120 (entraînement) : automates cellulaires")
+ (depends ocaml dune))

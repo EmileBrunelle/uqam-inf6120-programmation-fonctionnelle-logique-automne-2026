@@ -1,0 +1,4 @@
+(executable
+ (public_name CellularAutomata)
+ (name main)
+ (libraries cellular_automata))
