@@ -21,6 +21,15 @@ Trois contraintes seulement, le reste est libre : la question numérotée en
 première ligne commence par la lettre de la bonne réponse. Les questions sont
 séparées par une ligne `---`.
 
+### Plusieurs bonnes réponses (format de l'examen réel)
+
+À la place de `**X.**`, la réponse dépliable peut commencer par
+`**Bonnes : A, C**` (ou `**Bonnes : aucune**`) : de 0 à 4 bonnes. Dès qu'une
+question de l'examen généré est de ce type, le sujet dit seulement « Cochez la
+ou les réponses qui s'appliquent » (jamais combien) et le corrigé liste toutes
+les bonnes lettres. Une question à une seule bonne reste valide dans ce mode.
+Voir `ocaml-multiple.md` ; expliquer chaque choix, un par ligne, dans le corrigé.
+
 Le générateur renumérote et mélange, donc les numéros d'origine n'ont pas
 d'importance et les questions peuvent être ajoutées dans n'importe quel ordre.
 

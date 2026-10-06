@@ -22,6 +22,8 @@ BANQUES = pathlib.Path(__file__).resolve().parent / "revision" / "qcm"
 CHOIX = re.compile(r"^- \*\*([A-D])\)\*\* (.*)$")
 NUMERO = re.compile(r"^\*\*(\d+)\.\*\*\s*(.*)$")
 VERDICT = re.compile(r"^\*\*([A-D])\.\*\*\s*(.*)$")
+# Réponses multiples : **Bonnes : A, C** ou **Bonnes : aucune**
+BONNES = re.compile(r"^\*\*Bonnes\s*:\s*([^*]*?)\s*\*\*\s*(.*)$")
 
 # Les deux premiers examens ne portent pas sur la même matière.
 PORTEES = {
@@ -31,11 +33,12 @@ PORTEES = {
 
 
 class Question:
-    def __init__(self, source, enonce, choix, bonne, corrige):
+    def __init__(self, source, enonce, choix, bonne, corrige, multiple=False):
         self.source = source      # nom de la banque, pour le corrigé
         self.enonce = enonce
         self.choix = choix        # [(lettre, texte), ...]
-        self.bonne = bonne        # lettre
+        self.bonne = bonne        # lettre, ou "A, C" / "aucune" si multiple
+        self.multiple = multiple  # déclarée avec « Bonnes : »
         self.corrige = corrige    # explication, telle qu'écrite dans la banque
 
 
@@ -45,6 +48,7 @@ def lire_banque(chemin):
     for bloc in chemin.read_text().split("\n---\n"):
         lignes = bloc.strip().split("\n")
         enonce, choix, verdict, corrige = [], [], None, []
+        multiple = False
         section = "avant"
         for ligne in lignes:
             if NUMERO.match(ligne):
@@ -63,7 +67,16 @@ def lire_banque(chemin):
                 enonce.append(ligne)
             elif section == "corrige":
                 m = VERDICT.match(ligne)
-                if m and verdict is None:
+                mb = BONNES.match(ligne)
+                if mb and verdict is None:
+                    lettres = re.findall(r"[A-D]", mb.group(1))
+                    if lettres or mb.group(1).strip().lower() == "aucune":
+                        multiple = True
+                        verdict = ", ".join(sorted(set(lettres))) or "aucune"
+                        corrige.append(mb.group(2))
+                    else:
+                        corrige.append(ligne)
+                elif m and verdict is None:
                     verdict = m.group(1)
                     corrige.append(m.group(2))
                 else:
@@ -76,6 +89,7 @@ def lire_banque(chemin):
                 choix,
                 verdict,
                 "\n".join(corrige).strip(),
+                multiple,
             ))
         elif enonce or choix:
             print(f"  ignoré : question mal formée dans {chemin.name}", file=sys.stderr)
@@ -97,8 +111,13 @@ def charger(sujets):
 
 def rendre(questions, titre):
     sujet = [f"# {titre}", ""]
-    sujet.append(f"{len(questions)} questions à choix multiple, une seule bonne "
-                 "réponse par question.")
+    if any(q.multiple for q in questions):
+        # format de l'examen réel : on ne dit jamais combien de bonnes
+        sujet.append(f"{len(questions)} questions. Cochez la ou les réponses "
+                     "qui s'appliquent.")
+    else:
+        sujet.append(f"{len(questions)} questions à choix multiple, une seule "
+                     "bonne réponse par question.")
     sujet.append("Répondre sans machine et sans notes, puis vérifier avec le "
                  "corrigé.")
     sujet.append("")
@@ -107,18 +126,20 @@ def rendre(questions, titre):
                    "question ratée, pas la question.")
     corrige.append("")
 
+    multi = any(q.multiple for q in questions)
     for n, q in enumerate(questions, 1):
         sujet.append(f"**{n}.** {q.enonce}")
         sujet.append("")
         for lettre, texte in q.choix:
             sujet.append(f"- **{lettre})** {texte}")
         sujet.append("")
-        sujet.append("Réponse : ______")
+        sujet.append("Réponse(s) : ______" if multi else "Réponse : ______")
         sujet.append("")
         sujet.append("---")
         sujet.append("")
 
-        corrige.append(f"**{n}.** {q.bonne} — {q.enonce}")
+        etiquette = f"Bonnes : {q.bonne}" if multi else q.bonne
+        corrige.append(f"**{n}.** {etiquette} — {q.enonce}")
         corrige.append("")
         corrige.append(q.corrige)
         corrige.append("")
